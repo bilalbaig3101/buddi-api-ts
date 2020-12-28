@@ -3,9 +3,9 @@
 This project was bootstrapped with [create-react-app my-app --template typescript](https://create-react-app.dev/docs/adding-typescript/).
 
 clone this repo with "git clone" or download it.
--> open terminal locate folder
--> run "npm install" (this will download all required libraries)
--> run "npm start" (this will start development server on port: 3000)
+* open terminal locate folder
+* run "npm install" (this will download all required libraries)
+* run "npm start" (this will start development server on port: 3000)
 
 ## Prerequisites
 
