@@ -4,13 +4,11 @@ import CodeSnippet from './Components/CodeSnippet';
 import CustomButton from './Components/CustomButton';
 import ResponseRegion from './Components/ResponseRegion';
 import Textbox from './Components/Textbox';
-import './Styles/App.css';
-import { ThemeProvider } from "styled-components";
-import { GlobalStyles } from "./Styles/GlobalStyle";
-import { lightTheme, darkTheme } from "./Styles/Theme";
+import './Styles/App.scss';
+import './Styles/theme.scss'
 
 interface AppState {
-  isDark: boolean,
+  isDark: string,
   regions: string | null,
   urls: string | null,
   legacyUrls: string | null,
@@ -28,7 +26,7 @@ class App extends React.Component<{}, AppState> {
   constructor(props?: any) {
     super(props);
     this.state = {
-      isDark: false,
+      isDark: 'light',
       regions: null,
       urls: null,
       legacyUrls: null,
@@ -45,14 +43,21 @@ class App extends React.Component<{}, AppState> {
   public componentWillMount() {
     const isDarkTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
     if (isDarkTheme) {
-      this.setState({ isDark: true })
+      this.setState({ isDark: 'dark' })
     }
   }
   private toogleTheme = () => {
-    const theme = !(this.state.isDark);
-    this.setState({
-      isDark: theme
-    })
+    const theme = this.state.isDark;
+    if (theme === 'light') {
+      this.setState({
+        isDark: 'dark'
+      })
+    }
+    else{
+      this.setState({
+        isDark: 'light'
+      })
+    }
   }
   private getRegions = async () => {
     try {
@@ -107,64 +112,59 @@ class App extends React.Component<{}, AppState> {
   }
   render() {
     return (
-      <ThemeProvider theme={this.state.isDark ? darkTheme : lightTheme}>
-        <>
-          <GlobalStyles />
-          <div className="App">
-            <CustomButton onClickHandler={this.toogleTheme} text={`Switch to ${this.state.isDark ? ("🌞") : ("🌛")}`} />
-            <h1>Buddi Api {this.state.isDark ? ("🌛") : ("🌞")}</h1>
-            <p>The following is a description of available REST
+      <div className={`App ${this.state.isDark}`}>
+        <CustomButton onClickHandler={this.toogleTheme} text={`Switch to ${this.state.isDark==='dark' ? ("🌞") : ("🌛")}`} />
+        <h1>Buddi Api {this.state.isDark==='dark' ? ("🌛") : ("🌞")}</h1>
+        <p>The following is a description of available REST
         endpoints for the BUDDI API. <br />
         Base URL for JSON requets: <CodeSnippet text="/WebService" />
-            </p>
-            <h2>1. GetRegions</h2>
-            <ul>
-              <li>Returns the list of Regions.</li>
-              <li>JSON: <CodeSnippet text="GET /GetRegions" /></li>
-            </ul>
-            <CustomButton text="Test GET" onClickHandler={this.getRegions} />
-            <ResponseRegion data={this.state.regions} />
-            <h2>2. GetURL (Dynamic)</h2>
-            <ul>
-              <li>Returns a URL.</li>
-              <li>Paramenters must be specified in the URL as encoded parameters.</li>
-              <li>JSON: <CodeSnippet text="GET /GetURL?=<url_name_or_id>&resion=<region_name_or_id>" /></li>
-            </ul>
-            <div>
-              <h4 style={{ display: 'inline', marginRight: '10px' }}>url</h4>
-              <Textbox id="tag" value={this.state.urlObj.tag}
-                placeholder="URL Name or ID" handleOnChange={this.onchangeHandlerURL} />
-              <h4 style={{
-                display: 'inline', marginRight: '10px',
-                marginLeft: '10px'
-              }}>region</h4>
-              <Textbox id="region" value={this.state.urlObj.region}
-                placeholder="Region Name or ID" handleOnChange={this.onchangeHandlerURL} />
-              <CustomButton text="Test GET" onClickHandler={this.getUrls} />
-              <ResponseRegion data={this.state.urls} />
-            </div>
-            <h2>3. GetURL (Legacy)</h2>
-            <ul>
-              <li>Returns a URL.</li>
-              <li>Paramenters must be specified in the URL as encoded parameters.</li>
-              <li>JSON: <CodeSnippet text="GET /GetURL?urlName=<url_name>&regionId=<regionId>" /></li>
-            </ul>
-            <div>
-              <h4 style={{ display: 'inline', marginRight: '10px' }}>urlName</h4>
-              <Textbox id="tag" value={this.state.legacyUrlObj.tag}
-                placeholder="URL Name" handleOnChange={this.onchangeHandlerLegacy} />
-              <h4 style={{
-                display: 'inline', marginRight: '10px',
-                marginLeft: '10px'
-              }}>regionId</h4>
-              <Textbox id="region" value={this.state.legacyUrlObj.region}
-                placeholder="Region ID" handleOnChange={this.onchangeHandlerLegacy} />
-              <CustomButton text="Test GET" onClickHandler={this.getLegacyUrls} />
-              <ResponseRegion data={this.state.legacyUrls} />
-            </div>
-          </div>
-        </>
-      </ThemeProvider>
+        </p>
+        <h2>1. GetRegions</h2>
+        <ul>
+          <li>Returns the list of Regions.</li>
+          <li>JSON: <CodeSnippet text="GET /GetRegions" /></li>
+        </ul>
+        <CustomButton text="Test GET" onClickHandler={this.getRegions} />
+        <ResponseRegion theme={this.state.isDark} data={this.state.regions} />
+        <h2>2. GetURL (Dynamic)</h2>
+        <ul>
+          <li>Returns a URL.</li>
+          <li>Paramenters must be specified in the URL as encoded parameters.</li>
+          <li>JSON: <CodeSnippet text="GET /GetURL?=<url_name_or_id>&resion=<region_name_or_id>" /></li>
+        </ul>
+        <div>
+          <h4 style={{ display: 'inline', marginRight: '10px' }}>url</h4>
+          <Textbox id="tag" value={this.state.urlObj.tag}
+            placeholder="URL Name or ID" handleOnChange={this.onchangeHandlerURL} />
+          <h4 style={{
+            display: 'inline', marginRight: '10px',
+            marginLeft: '10px'
+          }}>region</h4>
+          <Textbox id="region" value={this.state.urlObj.region}
+            placeholder="Region Name or ID" handleOnChange={this.onchangeHandlerURL} />
+          <CustomButton text="Test GET" onClickHandler={this.getUrls} />
+          <ResponseRegion theme={this.state.isDark} data={this.state.urls} />
+        </div>
+        <h2>3. GetURL (Legacy)</h2>
+        <ul>
+          <li>Returns a URL.</li>
+          <li>Paramenters must be specified in the URL as encoded parameters.</li>
+          <li>JSON: <CodeSnippet text="GET /GetURL?urlName=<url_name>&regionId=<regionId>" /></li>
+        </ul>
+        <div>
+          <h4 style={{ display: 'inline', marginRight: '10px' }}>urlName</h4>
+          <Textbox id="tag" value={this.state.legacyUrlObj.tag}
+            placeholder="URL Name" handleOnChange={this.onchangeHandlerLegacy} />
+          <h4 style={{
+            display: 'inline', marginRight: '10px',
+            marginLeft: '10px'
+          }}>regionId</h4>
+          <Textbox id="region" value={this.state.legacyUrlObj.region}
+            placeholder="Region ID" handleOnChange={this.onchangeHandlerLegacy} />
+          <CustomButton text="Test GET" onClickHandler={this.getLegacyUrls} />
+          <ResponseRegion theme={this.state.isDark} data={this.state.legacyUrls} />
+        </div>
+      </div>
     )
   }
 }

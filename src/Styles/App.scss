@@ -1,0 +1,13 @@
+.App {
+    margin: 0px;
+    padding: 0px;
+    background-color:var(--theme-page-background-color);
+    color: var(--theme-page-text-color);
+    transition-duration: 700ms;
+    font-family: 'Segoe UI';
+    padding: 2% 15%;
+  }
+  .response-area{
+    background-color: var(--theme-response-area-background-color);
+    transition-duration: 700ms
+  }

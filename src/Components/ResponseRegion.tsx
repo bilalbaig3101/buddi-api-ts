@@ -1,12 +1,15 @@
 import React from 'react'
+import './../Styles/App.scss';
+import './../Styles/theme.scss'
 
 interface Props{
     data: string | null
+    theme: string
 }
 
-const ResponseRegion:React.FC<Props> = ({ data }) => {
+const ResponseRegion:React.FC<Props> = ({ data,theme }) => {
     return (
-        <div className="response-area" style={style}>
+        <div className={`response-area ${theme}`} style={style}>
             {
                 data === null ?
                     (
