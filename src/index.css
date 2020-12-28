@@ -18,7 +18,7 @@ code {
 .response-area{
   background-color: #FFF;
 }
-/* @media (prefers-color-scheme: light){
+@media (prefers-color-scheme: light){
   body{
     background-color: #F8F9FB;
     color:#002A44;
@@ -36,5 +36,5 @@ code {
   .response-area{
     background-color: #30475e;
   }
-} */
+}
 
